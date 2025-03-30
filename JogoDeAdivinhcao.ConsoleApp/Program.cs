@@ -7,6 +7,13 @@ namespace JogoDeAdivinhcao.ConsoleApp
         //Versão 3: Verificar se o jogador acertou
         static void Main(string[] args)
         {
+
+            string[] historicoDeTentivas = new string[100];
+            int contadorHistorico = 0;
+
+                      
+
+
             while (true)
             {
                 Console.WriteLine("--------------------------------------------");
@@ -19,6 +26,7 @@ namespace JogoDeAdivinhcao.ConsoleApp
                 Console.WriteLine("1 - Fácil (10 tentativas)");
                 Console.WriteLine("2 - Médio (5 tentativas)");
                 Console.WriteLine("3 - Difícil (3 tentativas)");
+                Console.WriteLine("4 - Histórico de Tentativas");
                 Console.WriteLine("----------------------------------------");
 
                 int totalDetentativas = 0;
@@ -32,6 +40,22 @@ namespace JogoDeAdivinhcao.ConsoleApp
                     totalDetentativas = 5;
                 else if (entrada == "3")
                     totalDetentativas = 3;
+
+                else if (entrada == "4")
+                {
+                    Console.WriteLine("--------------------------------------------");
+                    Console.WriteLine("Histórico de Tentativas");
+                    Console.WriteLine("--------------------------------------------");
+
+                    for (int contador = 0; contador < contadorHistorico; contador++)
+                    {
+                        Console.WriteLine(historicoDeTentivas[contador]);
+                    }
+
+                    Console.ReadLine();
+                    continue;
+
+                }
 
 
 
@@ -57,11 +81,16 @@ namespace JogoDeAdivinhcao.ConsoleApp
                     Console.Write("Digite um número entre 1 e 20: ");
                     int numeroDigitado = Convert.ToInt32(Console.ReadLine());
 
+                    historicoDeTentivas[contadorHistorico] = $"o numero chutado foi : {numeroDigitado}";
+                    contadorHistorico++;
+
                     if (numeroDigitado == numeroSecreto)
                     {
                         Console.WriteLine("--------------------------------------------");
                         Console.WriteLine("Parabéns, você acertou!");
                         Console.WriteLine("--------------------------------------------");
+
+                                             
 
                         break;
                     }
@@ -71,13 +100,18 @@ namespace JogoDeAdivinhcao.ConsoleApp
                         Console.WriteLine($"Que pena! Você usou todas as tentativas. O número era {numeroSecreto}.");
                         Console.WriteLine("----------------------------------------");
 
+                       
+
                         break;
                     }
-                    else if (numeroDigitado > totalDetentativas)
+                    else if (numeroDigitado > numeroSecreto)
                     {
                         Console.WriteLine("--------------------------------------------");
                         Console.WriteLine("O número digitado foi maior que o número secreto");
                         Console.WriteLine("--------------------------------------------");
+
+                        
+
                     }
                     else
                     {
@@ -85,18 +119,25 @@ namespace JogoDeAdivinhcao.ConsoleApp
                         Console.WriteLine("O número digitado foi menor que o número secreto");
                         Console.WriteLine("--------------------------------------------");
 
+                        
+
+
 
                     }
 
                     Console.WriteLine("Aperte ENTER para continuar...");
                     Console.ReadLine();
-                }
+
+                    
+                }               
 
                 Console.Write("Deseja continuar? (S/N): ");
                 string opcaoContinuar = Console.ReadLine().ToUpper();
 
                 if (opcaoContinuar != "S")
                     break;
+
+                contadorHistorico++;
 
             }
               
