@@ -1,5 +1,7 @@
 # Jogo de Adivinhação
 
+![](https://imgur.com/3R9LI1W)
+
 ## Introdução
 
 É um jogo de adivinhação. O computador pensará em um número, e você, jogador, precisará adivinhá-lo.
@@ -15,5 +17,7 @@ Ao final, se você ganhar, o computador lhe dirá quantos pontos você fez, baseand
 - Gerar um número secreto aleatório
 - Verificar se o jogador acertou
 - Gerar múltiplas tentativas
+- Armazenar e exibir números já digitados
+- Sistema de Pontuação
 
 [![tecnologias](https://skillicons.dev/icons?i=git,github,cs,dotnet,visualstudio)](https://skillicons.dev)
