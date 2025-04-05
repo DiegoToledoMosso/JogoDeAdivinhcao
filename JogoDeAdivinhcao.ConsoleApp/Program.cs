@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace JogoDeAdivinhcao.ConsoleApp
 {
@@ -11,7 +12,7 @@ namespace JogoDeAdivinhcao.ConsoleApp
             string[] historicoDeTentivas = new string[100];
             int contadorHistorico = 0;
 
-                      
+                                
 
 
             while (true)
@@ -30,6 +31,7 @@ namespace JogoDeAdivinhcao.ConsoleApp
                 Console.WriteLine("----------------------------------------");
 
                 int totalDetentativas = 0;
+                
 
                 Console.Write("Digite sua escolha: ");
                 string entrada = Console.ReadLine();
@@ -56,6 +58,10 @@ namespace JogoDeAdivinhcao.ConsoleApp
                     continue;
 
                 }
+
+                int pontuacao = 1000;
+                int algoritmo = 0;
+                int resultado = 0;
 
 
 
@@ -84,13 +90,19 @@ namespace JogoDeAdivinhcao.ConsoleApp
                     historicoDeTentivas[contadorHistorico] = $"o numero chutado foi : {numeroDigitado}";
                     contadorHistorico++;
 
+                   
+
                     if (numeroDigitado == numeroSecreto)
                     {
                         Console.WriteLine("--------------------------------------------");
                         Console.WriteLine("Parabéns, você acertou!");
                         Console.WriteLine("--------------------------------------------");
 
-                                             
+                        
+
+
+
+
 
                         break;
                     }
@@ -100,17 +112,28 @@ namespace JogoDeAdivinhcao.ConsoleApp
                         Console.WriteLine($"Que pena! Você usou todas as tentativas. O número era {numeroSecreto}.");
                         Console.WriteLine("----------------------------------------");
 
-                       
+                        
+
+
+
+
+
 
                         break;
-                    }
+                    }                                    
+
                     else if (numeroDigitado > numeroSecreto)
                     {
                         Console.WriteLine("--------------------------------------------");
                         Console.WriteLine("O número digitado foi maior que o número secreto");
                         Console.WriteLine("--------------------------------------------");
 
-                        
+                        algoritmo = (numeroDigitado - numeroSecreto) / 2;
+                        resultado = pontuacao - algoritmo;
+
+
+
+
 
                     }
                     else
@@ -121,16 +144,26 @@ namespace JogoDeAdivinhcao.ConsoleApp
 
                         
 
+                        algoritmo = (numeroDigitado - numeroSecreto) / 2;
+                        resultado = pontuacao - algoritmo;
+
+
 
 
                     }
 
-                    Console.WriteLine("Aperte ENTER para continuar...");
-                    Console.ReadLine();
+
 
                     
-                }               
+                    Console.WriteLine("Aperte ENTER para continuar...");
+                    Console.ReadLine();
+                    
 
+
+
+                }
+
+                Console.WriteLine("Tua pontuação foi de: " + resultado);
                 Console.Write("Deseja continuar? (S/N): ");
                 string opcaoContinuar = Console.ReadLine().ToUpper();
 
