@@ -17,15 +17,8 @@ namespace JogoDeAdivinhcao.ConsoleApp
             while (true)
             {
 
-                int totalDetentativas = 0;
-
-                int pontuacao = 1000;
-
-                int algoritmo = 0;
-
-                int resultado = 0;
-
-
+                int totalDetentativas = 0;                
+                
                 string entrada = ExibirMenu();
 
                 if (entrada == "1")
@@ -48,13 +41,57 @@ namespace JogoDeAdivinhcao.ConsoleApp
 
                 int numeroSecreto = geradorDeNumeros.Next(1, 21);
 
+                //Sistema de amazenamento de númeors já chutados.
+                int[] numerosChutados = new int[100];
+                int contadorNumerosChutados = 0;
+
+                // Sistema de Pontuação
+                int pontuacao = 1000;
+
+
 
                 for (int tentativa = 1; tentativa <= totalDetentativas; tentativa++)
                 {
 
+                    ExibirMenuEscolha(tentativa, totalDetentativas, pontuacao);
+                    
+                    for (int i = 0; i < numerosChutados.Length; i++)
+                    {
+                        if (numerosChutados[i] > 0)
+                        {
+                            Console.Write(numerosChutados[i] + " ");
+                        }
+                    }
 
-                    ExibirMenuEscolha(contadorHistorico, tentativa);
-                    int numeroDigitado = Convert.ToInt32(Console.ReadLine());
+                    Espaco();
+
+                    int numeroDigitado;
+                    bool numeroRepetido;
+
+                    do
+                    {
+                        numeroRepetido = false;
+
+                        Console.Write("Digite um número entre 1 e 20: ");                        
+                        numeroDigitado = Convert.ToInt32(Console.ReadLine());
+
+                        for (int i = 0; i < numerosChutados.Length; i++)
+                        {
+                            if (numerosChutados[i] == numeroDigitado)
+                            {
+                                NumeroJaDigitado();
+
+                                numeroRepetido = true;
+                                break;
+                            }
+                        }
+
+                    } while (numeroRepetido == true);
+
+                    
+
+                    numerosChutados[contadorNumerosChutados] = numeroDigitado;
+                    contadorNumerosChutados++;
 
                     historicoDeTentivas[contadorHistorico] = $"o numero chutado foi : {numeroDigitado}";
                     contadorHistorico++;
@@ -75,24 +112,23 @@ namespace JogoDeAdivinhcao.ConsoleApp
                     else if (numeroDigitado > numeroSecreto)
                     {
                         NumeroMaior();
-                        Pontuacao(algoritmo, resultado, pontuacao, numeroSecreto, numeroDigitado);
+                        pontuacao -= Math.Abs(numeroDigitado - numeroSecreto) / 2;
 
-                        
                     }
                     else
                     {
                         NumeroMenor();
-                        Pontuacao(algoritmo, resultado, pontuacao, numeroSecreto, numeroDigitado);
+                        pontuacao -= Math.Abs(numeroDigitado - numeroSecreto) / 2;
 
                     }
 
-                    Console.WriteLine("Aperte ENTER para continuar...");
-                    Console.ReadLine();
+                    MenuContinuar();
 
                 }
 
-                MenuFinal(resultado);
+                MenuFinal();
                 string opcaoContinuar = Console.ReadLine().ToUpper();
+
                 if (opcaoContinuar != "S")
                     break;
 
@@ -147,17 +183,20 @@ namespace JogoDeAdivinhcao.ConsoleApp
             Console.ReadLine();
         }
 
-        static void ExibirMenuEscolha(int tentativa, int totalDetentativas)
+        static void ExibirMenuEscolha(int tentativa, int totalDetentativas, int pontuacao)
         {
             Console.Clear();
             Console.WriteLine("--------------------------------------------");
             Console.WriteLine($"Tentativa {tentativa} de {totalDetentativas}");
             Console.WriteLine("--------------------------------------------");
+            Console.WriteLine("Pontuação " + pontuacao + " pontos");
+            Console.WriteLine("----------------------------");
+            Console.WriteLine();
 
 
-            Console.Write("Digite um número entre 1 e 20: ");
 
-
+            Console.WriteLine("Números já chutados:  ");
+                       
 
         }
 
@@ -170,6 +209,9 @@ namespace JogoDeAdivinhcao.ConsoleApp
             return ExibirVitoria();
         }
 
+                   
+
+
         static void ExibirDerrota(int numeroSecreto)
         {
             Console.WriteLine("----------------------------------------");
@@ -179,10 +221,23 @@ namespace JogoDeAdivinhcao.ConsoleApp
             
         }
 
-        static void Pontuacao(int algoritmo, int resultado, int pontuacao, int numeroDigitado, int numeroSecreto)
+        static void Pontuacao(int pontuacao, int numeroDigitado, int numeroSecreto)
         {
-            algoritmo = (numeroDigitado - numeroSecreto) / 2;
-            resultado = pontuacao - algoritmo;
+            pontuacao -= Math.Abs(numeroDigitado - numeroSecreto) / 2;
+            //-= decrementar
+            //+= incrementar
+        }
+
+        static void Espaco()
+        {
+            Console.WriteLine();
+            Console.WriteLine("----------------------------");
+        }
+        
+        static void NumeroJaDigitado()
+        {
+            Console.WriteLine("Você já digitou esse número!! Aperte ENTER para tentar novamente ...");
+            Console.ReadLine();
         }
 
         static void NumeroMaior()
@@ -199,13 +254,18 @@ namespace JogoDeAdivinhcao.ConsoleApp
             Console.WriteLine("--------------------------------------------");
         }
         
-        static void MenuFinal(int resultado)
+        static void MenuFinal()
         {
-            Console.WriteLine("Tua pontuação foi de: " + resultado);
-            Console.Write("Deseja continuar? (S/N): ");
             
+            Console.Write("Deseja continuar? (S/N): ");           
 
             
+        }
+
+        static void MenuContinuar()
+        {
+            Console.WriteLine("Aperte ENTER para continuar...");
+            Console.ReadLine();
         }
     }
 }
